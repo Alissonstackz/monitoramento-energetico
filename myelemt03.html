@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Pegada de Carbono - Salve.terra</title>
+    <style>
+        body {
+            background-color: #2d5733;
+            color: #000;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fc0;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 500px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            width: 100%;
+        }
+        button {
+            background-color: #000;
+            color: #fc0;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #fff;
+            color: #000;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #000;
+        }
+        .explicativo {
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-align: left;
+        }
+        .room-input {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .room-input input {
+            width: calc(100% - 22px); /* Ajusta para o padding */
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Carbono: Consumo de Eletricidade</h1>
+
+        <p class="explicativo">
+            <b>Esta calculadora avalia sua pegada de carbono com base no tempo em que as luzes ficam apagadas em cada cômodo da sua casa. Insira o número de cômodos (máximo de 8) e o tempo que as luzes ficaram apagadas para cada cômodo para calcular sua eficiência energética.</b>
+        </p>
+
+        <form id="carbonCalculator">
+            <label for="rooms">Quantidade de Cômodos (máx. 8):</label>
+            <input type="number" id="rooms" name="rooms" min="1" max="8" required>
+            <div id="roomInputs" class="room-input">
+                <!-- Campos de entrada para os tempos das luzes apagadas serão gerados aqui -->
+            </div>
+            <button type="submit">Calcular</button>
+        </form>
+        <div id="result">
+            <!-- O resultado será exibido aqui -->
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('rooms').addEventListener('input', function() {
+            const numRooms = parseInt(this.value);
+            const roomInputs = document.getElementById('roomInputs');
+            roomInputs.innerHTML = '';
+
+            // Garantir que o número de cômodos esteja dentro do limite permitido
+            const maxRooms = 8;
+            const roomsToCreate = Math.min(numRooms, maxRooms);
+
+            for (let i = 1; i <= roomsToCreate; i++) {
+                const label = document.createElement('label');
+                label.setAttribute('for', `room${i}`);
+                label.innerText = `Horas com luzes apagadas no cômodo ${i}:`;
+
+                const input = document.createElement('input');
+                input.setAttribute('type', 'number');
+                input.setAttribute('id', `room${i}`);
+                input.setAttribute('name', `room${i}`);
+                input.setAttribute('min', '0');
+                input.setAttribute('max', '24');
+                input.setAttribute('required', '');
+
+                roomInputs.appendChild(label);
+                roomInputs.appendChild(input);
+            }
+        });
+
+        document.getElementById('carbonCalculator').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const numRooms = parseInt(document.getElementById('rooms').value);
+            let totalLightsOff = 0;
+            const recommendedLightsOff = 16;
+
+            // Garantir que o número de cômodos esteja dentro do limite permitido
+            const maxRooms = 8;
+            const roomsToCalculate = Math.min(numRooms, maxRooms);
+
+            for (let i = 1; i <= roomsToCalculate; i++) {
+                const lightsOff = parseFloat(document.getElementById(`room${i}`).value) || 0;
+                totalLightsOff += lightsOff;
+            }
+
+            const recommendedTotalLightsOff = recommendedLightsOff * roomsToCalculate;
+
+            // Exibir o resultado
+            let resultMessage = `Você manteve as luzes apagadas por um total de ${totalLightsOff.toFixed(2)} horas somando todos os cômodos mencionados.`;
+
+            if (totalLightsOff < recommendedTotalLightsOff) {
+                resultMessage += ` ⚠️ Tente manter as luzes apagadas por pelo menos ${recommendedTotalLightsOff} horas no total para reduzir sua pegada de carbono.`;
+            } else {
+                resultMessage += ` ✅ Ótimo! Você está dentro do tempo recomendado de ${recommendedTotalLightsOff} horas no total.`;
+            }
+
+            document.getElementById('result').innerText = resultMessage;
+        });
+    </script>
+</body>
+</html>

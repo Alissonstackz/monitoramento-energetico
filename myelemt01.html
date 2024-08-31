@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salve.terra - Login e Cadastro</title>
+    <style>
+        body {
+            background-color: #2d5733;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #ffcc00;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            width: 700px;
+        }
+
+        .logo img {
+            width: 150px;
+            margin-bottom: 20px;
+            border-radius: 100px;
+        }
+
+        .form-area {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .login, .cadastro {
+            background-color: #00ff73;
+            padding: 20px;
+            border-radius: 10px;
+            width: 45%;
+        }
+
+        input[type="email"], input[type="password"], input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            background-color: #000;
+            color: #ffcc00;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #fff;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="Consciente.PNG" alt="Logo Salve.terra">
+        </div>
+        <div class="form-area">
+            <div class="login">
+                <h2>Login</h2>
+                <form id="loginForm" onsubmit="return validateLogin()">
+                    <input type="email" id="email" placeholder="E-mail" required>
+                    <input type="password" id="password" placeholder="Senha" required>
+                    <button type="submit">Entrar</button>
+                </form>
+            </div> 
+            <div class="cadastro">
+                <h2>Cadastre-se</h2>
+                <form id="cadastroForm" onsubmit="return validateCadastro()">
+                    <input type="text" id="nome" placeholder="Nome Completo" required>
+                    <input type="email" id="cadastroEmail" placeholder="E-mail" required>
+                    <input type="password" id="cadastroSenha" placeholder="Senha" required>
+                    <input type="password" id="confirmeSenha" placeholder="Confirme a Senha" required>
+                    <button type="submit">Cadastrar</button>
+                </form>
+            </div>   
+        </div>
+    </div>    
+
+    <script>
+        function validateLogin() {
+            var email = document.getElementById('email').value;
+            var password = document.getElementById('password').value;
+
+            if (email && password) {
+                // Após login bem-sucedido, redireciona para o dashboard
+                window.location.href = "myelemt02.html";
+                return false;
+            } else {
+                alert('Por favor, preencha todos os campos.');
+                return false;
+            }
+        }
+
+        function validateCadastro() {
+            var nome = document.getElementById('nome').value;
+            var email = document.getElementById('cadastroEmail').value;
+            var senha = document.getElementById('cadastroSenha').value;
+            var confirmeSenha = document.getElementById('confirmeSenha').value;
+
+            if (nome && email && senha && confirmeSenha) {
+                if (senha === confirmeSenha) {
+                    // Após cadastro bem-sucedido, redireciona para o dashboard
+                    window.location.href = "myelemt02.html";
+                    return false;
+                } else {
+                    alert('As senhas não coincidem.');
+                    return false;
+                }
+            } else {
+                alert('Por favor, preencha todos os campos.');
+                return false;
+            }
+        }
+    </script>
+</body>
+</html>

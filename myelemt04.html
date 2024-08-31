@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoramento de Consumo Energético - Salve.terra</title>
+    <link rel="stylesheet" href="alertaenergy.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #2d5733;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fc0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d5733;
+        }
+
+        .comodo-item {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #2d5733;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        button:hover {
+            background-color: #244e29;
+        }
+
+        .timer {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Monitoramento de Consumo Energético</h1>
+
+        <div id="comodos">
+            <!-- Serão adicionados os comodos aqui -->
+        </div>
+
+        <button onclick="adicionarComodo()">Adicionar Cômodo</button>
+    </div>
+
+    <script>
+        const maxComodos = 8;
+        let comodoCount = 0;
+
+        function adicionarComodo() {
+            if (comodoCount >= maxComodos) return;
+
+            comodoCount++;
+
+            const comodoDiv = document.createElement('div');
+            comodoDiv.classList.add('comodo-item');
+            comodoDiv.setAttribute('id', `comodo-${comodoCount}`);
+
+            comodoDiv.innerHTML = `
+                <label for="comodo-${comodoCount}-select">Selecione o cômodo:</label>
+                <select id="comodo-${comodoCount}-select">
+                    <option value="sala">Sala</option>
+                    <option value="quarto">Quarto</option>
+                    <option value="cozinha">Cozinha</option>
+                    <option value="banheiro">Banheiro</option>
+                    <option value="garagem">Garagem</option>
+                    <option value="escritorio">Escritório</option>
+                    <option value="lavanderia">Lavanderia</option>
+                    <option value="outro">Outro</option>
+                </select>
+                <button onclick="iniciarEconomia(${comodoCount})">Iniciar Economia</button>
+                <button onclick="pausarEconomia(${comodoCount})">Pausar</button>
+                <button onclick="pararEconomia(${comodoCount})">Parar Economia</button>
+                <div id="timer-${comodoCount}" class="timer">Tempo economizado: 00:00:00</div>
+            `;
+
+            document.getElementById('comodos').appendChild(comodoDiv);
+        }
+
+        function formatTime(seconds) {
+            const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+            const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        let timers = {};
+        let intervals = {};
+        let pausados = {};
+
+        function iniciarEconomia(comodoId) {
+            if (timers[comodoId] && !pausados[comodoId]) return; // Se já estiver contando e não estiver pausado, não faça nada.
+            pausados[comodoId] = false;
+
+            if (!timers[comodoId]) timers[comodoId] = 0; // Iniciar o temporizador se ainda não existir.
+
+            intervals[comodoId] = setInterval(() => {
+                timers[comodoId]++;
+                document.getElementById(`timer-${comodoId}`).innerText = `Tempo economizado: ${formatTime(timers[comodoId])}`;
+            }, 1000);
+        }
+
+        function pausarEconomia(comodoId) {
+            if (pausados[comodoId]) {
+                iniciarEconomia(comodoId); // Retomar economia se estiver pausado.
+            } else {
+                clearInterval(intervals[comodoId]); // Pausar economia.
+                pausados[comodoId] = true;
+            }
+        }
+
+        function pararEconomia(comodoId) {
+            clearInterval(intervals[comodoId]);
+            delete intervals[comodoId];
+            delete pausados[comodoId];
+        }
+    </script>
+</body>
+</html>

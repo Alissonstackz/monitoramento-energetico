@@ -1,0 +1,82 @@
+/* Estilos existentes... */
+
+body {
+    background-color: #2d5733;
+    color: #000;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.logo-header {
+    width: 150px; /* Ajuste o tamanho da imagem aqui */
+    border-radius: 100%;
+}
+
+nav ul {
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    list-style-type: none;
+    background-color: #00ff73;
+    border-radius: 50px;
+}
+
+nav ul li {
+    padding: 10px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+}
+
+nav ul li a.active {
+    color: #ffcc00;
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    color: #ffcc00; /*....*/
+}
+
+main section {
+    background-color: #ffcc00;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px; /* Menor arredondamento para um visual mais moderno */
+}
+
+article {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #00ff73; /* Borda verde para destacar */
+    border-radius: 10px;
+    background-color: #ffffff; /* Fundo branco para contraste */
+}
+
+article h3 {
+    color: #00ff73;
+    font-size: 20px; /* Tamanho da fonte ajustado para os títulos */
+    margin-top: 0;
+}
+
+article p {
+    color: #000;
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
